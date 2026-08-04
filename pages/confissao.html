@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="Formulário para elaboração de instrumentos de confissão de dívida."
+    >
+
+    <title>Nova Confissão de Dívida | Contex Docs</title>
+
+    <link rel="stylesheet" href="../assets/css/confissao.css">
+    <script src="../assets/js/confissao.js" defer></script>
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="../index.html" aria-label="Ir para o início">
+                <span class="brand-mark" aria-hidden="true">CD</span>
+                <span class="brand-name">
+                    <strong>Contex</strong>
+                    <span>Docs</span>
+                </span>
+            </a>
+
+            <nav class="sidebar-nav" aria-label="Menu principal">
+                <a class="nav-item" href="../index.html">
+                    <span class="nav-icon" aria-hidden="true">⌂</span>
+                    <span>Início</span>
+                </a>
+
+                <a class="nav-item is-active" href="confissao.html" aria-current="page">
+                    <span class="nav-icon" aria-hidden="true">▤</span>
+                    <span>Confissão de Dívida</span>
+                </a>
+
+                <span class="nav-item is-disabled" aria-disabled="true">
+                    <span class="nav-icon" aria-hidden="true">▧</span>
+                    <span>Contratos</span>
+                    <small>Em breve</small>
+                </span>
+            </nav>
+
+            <div class="sidebar-footer">
+                <span>Contex Docs</span>
+                <small>Versão 0.0.2</small>
+            </div>
+        </aside>
+
+        <div class="page-shell">
+            <header class="topbar">
+                <button
+                    class="menu-toggle"
+                    type="button"
+                    aria-label="Abrir ou fechar menu"
+                    aria-expanded="false"
+                    data-js="menu-toggle"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div>
+                    <span class="eyebrow">Documentos jurídicos</span>
+                    <h1>Nova Confissão de Dívida</h1>
+                </div>
+
+                <div class="topbar-user" aria-label="Usuário atual">
+                    <span class="user-avatar" aria-hidden="true">C</span>
+                    <span>
+                        <strong>Contex</strong>
+                        <small>Administrador</small>
+                    </span>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <nav class="breadcrumb" aria-label="Navegação estrutural">
+                    <a href="../index.html">Início</a>
+                    <span aria-hidden="true">/</span>
+                    <span>Confissão de Dívida</span>
+                </nav>
+
+                <section class="page-intro" aria-labelledby="page-title">
+                    <div>
+                        <span class="section-kicker">Sprints 3 e 4</span>
+                        <h2 id="page-title">Dados do documento</h2>
+                        <p>
+                            Preencha as informações abaixo. Os campos marcados com
+                            <span class="required-symbol" aria-hidden="true">*</span>
+                            são obrigatórios.
+                        </p>
+                    </div>
+
+                    <div class="status-chip">
+                        <span aria-hidden="true"></span>
+                        Rascunho não salvo
+                    </div>
+                </section>
+
+                <form id="confissaoForm" novalidate>
+                    <section class="form-card" aria-labelledby="devedor-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">01</span>
+                            <div>
+                                <h3 id="devedor-title">Dados do devedor</h3>
+                                <p>Identifique a pessoa ou empresa que reconhece a dívida.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="field field-small">
+                                <label for="tipoPessoa">Tipo de pessoa <span>*</span></label>
+                                <select id="tipoPessoa" name="tipoPessoa" required data-js="tipo-pessoa">
+                                    <option value="">Selecione</option>
+                                    <option value="fisica">Pessoa física</option>
+                                    <option value="juridica">Pessoa jurídica</option>
+                                </select>
+                                <small class="field-error">Selecione o tipo de pessoa.</small>
+                            </div>
+
+                            <div class="field field-wide">
+                                <label for="nomeDevedor" data-js="label-nome">
+                                    Nome completo / Razão social <span>*</span>
+                                </label>
+                                <input
+                                    id="nomeDevedor"
+                                    name="nomeDevedor"
+                                    type="text"
+                                    autocomplete="name"
+                                    maxlength="120"
+                                    placeholder="Informe o nome ou a razão social"
+                                    required
+                                >
+                                <small class="field-error">Informe o nome do devedor.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="documentoDevedor" data-js="label-documento">
+                                    CPF / CNPJ <span>*</span>
+                                </label>
+                                <input
+                                    id="documentoDevedor"
+                                    name="documentoDevedor"
+                                    type="text"
+                                    inputmode="numeric"
+                                    maxlength="18"
+                                    placeholder="Digite somente números"
+                                    required
+                                    data-js="documento"
+                                >
+                                <small class="field-error">Informe o CPF ou CNPJ.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="rgDevedor">RG / Inscrição estadual</label>
+                                <input
+                                    id="rgDevedor"
+                                    name="rgDevedor"
+                                    type="text"
+                                    maxlength="30"
+                                    placeholder="Opcional"
+                                >
+                            </div>
+
+                            <div class="field">
+                                <label for="emailDevedor">E-mail</label>
+                                <input
+                                    id="emailDevedor"
+                                    name="emailDevedor"
+                                    type="email"
+                                    autocomplete="email"
+                                    maxlength="120"
+                                    placeholder="nome@empresa.com.br"
+                                >
+                                <small class="field-error">Informe um e-mail válido.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="telefoneDevedor">Telefone</label>
+                                <input
+                                    id="telefoneDevedor"
+                                    name="telefoneDevedor"
+                                    type="tel"
+                                    autocomplete="tel"
+                                    inputmode="numeric"
+                                    maxlength="15"
+                                    placeholder="(00) 00000-0000"
+                                    data-js="telefone"
+                                >
+                            </div>
+
+                            <div class="field field-full">
+                                <label for="enderecoDevedor">Endereço completo <span>*</span></label>
+                                <input
+                                    id="enderecoDevedor"
+                                    name="enderecoDevedor"
+                                    type="text"
+                                    autocomplete="street-address"
+                                    maxlength="180"
+                                    placeholder="Rua, número, complemento, bairro, cidade, UF e CEP"
+                                    required
+                                >
+                                <small class="field-error">Informe o endereço completo.</small>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="form-card" aria-labelledby="credor-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">02</span>
+                            <div>
+                                <h3 id="credor-title">Dados do credor</h3>
+                                <p>Selecione a empresa da Contex que possui o crédito.</p>
+                            </div>
+                        </div>
+
+                        <fieldset class="creditor-selector field">
+                            <legend>Credor <span>*</span></legend>
+
+                            <div class="creditor-options">
+                                <label class="creditor-option">
+                                    <input
+                                        type="radio"
+                                        name="credorSelecionado"
+                                        value="contex-brasil"
+                                        required
+                                    >
+                                    <span class="creditor-radio" aria-hidden="true"></span>
+                                    <span class="creditor-content">
+                                        <strong>Contex Brasil</strong>
+                                        <small>CNPJ 04.244.373/0001-69</small>
+                                    </span>
+                                </label>
+
+                                <label class="creditor-option">
+                                    <input
+                                        type="radio"
+                                        name="credorSelecionado"
+                                        value="contex-digital"
+                                        required
+                                    >
+                                    <span class="creditor-radio" aria-hidden="true"></span>
+                                    <span class="creditor-content">
+                                        <strong>Contex Digital</strong>
+                                        <small>CNPJ 34.199.150/0001-98</small>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <small class="field-error">Selecione uma das empresas credoras.</small>
+                        </fieldset>
+
+                        <div class="creditor-details" data-js="credor-detalhes" aria-live="polite">
+                            <span class="note-icon" aria-hidden="true">i</span>
+                            <p>Selecione um credor para visualizar os dados que serão usados no documento.</p>
+                        </div>
+                    </section>
+
+                    <section class="form-card" aria-labelledby="fiador-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">03</span>
+                            <div>
+                                <h3 id="fiador-title">Dados do fiador</h3>
+                                <p>Inclua o garantidor somente quando fizer parte da negociação.</p>
+                            </div>
+                        </div>
+
+                        <label class="guarantor-toggle">
+                            <input type="checkbox" name="possuiFiador" data-js="possui-fiador">
+                            <span aria-hidden="true"></span>
+                            <span>
+                                <strong>Este documento possui fiador</strong>
+                                <small>Ao ativar, os dados abaixo passam a ser obrigatórios.</small>
+                            </span>
+                        </label>
+
+                        <div class="form-grid guarantor-fields" data-js="campos-fiador" hidden>
+                            <div class="field field-full">
+                                <label for="nomeFiador">Nome completo <span>*</span></label>
+                                <input
+                                    id="nomeFiador"
+                                    name="nomeFiador"
+                                    type="text"
+                                    maxlength="120"
+                                    placeholder="Nome completo do fiador"
+                                    data-fiador-required
+                                >
+                                <small class="field-error">Informe o nome do fiador.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="cpfFiador">CPF <span>*</span></label>
+                                <input
+                                    id="cpfFiador"
+                                    name="cpfFiador"
+                                    type="text"
+                                    inputmode="numeric"
+                                    maxlength="14"
+                                    placeholder="000.000.000-00"
+                                    data-js="documento"
+                                    data-fiador-required
+                                >
+                                <small class="field-error">Informe o CPF do fiador.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="nacionalidadeFiador">Nacionalidade <span>*</span></label>
+                                <input
+                                    id="nacionalidadeFiador"
+                                    name="nacionalidadeFiador"
+                                    type="text"
+                                    value="brasileiro(a)"
+                                    maxlength="60"
+                                    data-fiador-required
+                                >
+                                <small class="field-error">Informe a nacionalidade.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="estadoCivilFiador">Estado civil <span>*</span></label>
+                                <input
+                                    id="estadoCivilFiador"
+                                    name="estadoCivilFiador"
+                                    type="text"
+                                    maxlength="60"
+                                    placeholder="Ex.: casado(a)"
+                                    data-fiador-required
+                                >
+                                <small class="field-error">Informe o estado civil.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="profissaoFiador">Profissão <span>*</span></label>
+                                <input
+                                    id="profissaoFiador"
+                                    name="profissaoFiador"
+                                    type="text"
+                                    value="empresário(a)"
+                                    maxlength="80"
+                                    data-fiador-required
+                                >
+                                <small class="field-error">Informe a profissão.</small>
+                            </div>
+
+                            <div class="field field-full">
+                                <label for="enderecoFiador">Endereço completo <span>*</span></label>
+                                <input
+                                    id="enderecoFiador"
+                                    name="enderecoFiador"
+                                    type="text"
+                                    maxlength="180"
+                                    placeholder="Rua, número, complemento, bairro, cidade, UF e CEP"
+                                    data-fiador-required
+                                >
+                                <small class="field-error">Informe o endereço completo.</small>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="form-card" aria-labelledby="divida-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">04</span>
+                            <div>
+                                <h3 id="divida-title">Informações da dívida</h3>
+                                <p>Registre a origem e o valor reconhecido pelas partes.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="valorDivida">Valor total da dívida <span>*</span></label>
+                                <div class="input-prefix">
+                                    <span aria-hidden="true">R$</span>
+                                    <input
+                                        id="valorDivida"
+                                        name="valorDivida"
+                                        type="text"
+                                        inputmode="numeric"
+                                        placeholder="0,00"
+                                        required
+                                        data-js="moeda"
+                                    >
+                                </div>
+                                <small class="field-error">Informe o valor total da dívida.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="dataConfissao">Data da confissão <span>*</span></label>
+                                <input
+                                    id="dataConfissao"
+                                    name="dataConfissao"
+                                    type="date"
+                                    required
+                                    data-js="data-confissao"
+                                >
+                                <small class="field-error">Informe a data da confissão.</small>
+                            </div>
+
+                            <div class="field field-full">
+                                <label for="origemDivida">Origem da dívida <span>*</span></label>
+                                <textarea
+                                    id="origemDivida"
+                                    name="origemDivida"
+                                    rows="4"
+                                    maxlength="600"
+                                    placeholder="Descreva os serviços, produtos, contratos ou fatos que deram origem à dívida."
+                                    required
+                                ></textarea>
+                                <div class="field-meta">
+                                    <small class="field-error">Descreva a origem da dívida.</small>
+                                    <small><span data-js="contador-origem">0</span>/600 caracteres</small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="form-card" aria-labelledby="pagamento-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">05</span>
+                            <div>
+                                <h3 id="pagamento-title">Condições de pagamento</h3>
+                                <p>Defina as condições gerais e os vencimentos acordados.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="formaPagamento">Forma de pagamento <span>*</span></label>
+                                <select id="formaPagamento" name="formaPagamento" required>
+                                    <option value="">Selecione</option>
+                                    <option value="pix">PIX</option>
+                                    <option value="boleto">Boleto bancário</option>
+                                    <option value="transferencia">Transferência bancária</option>
+                                    <option value="outro">Outra</option>
+                                </select>
+                                <small class="field-error">Selecione a forma de pagamento.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="primeiroVencimento">Primeiro vencimento <span>*</span></label>
+                                <input
+                                    id="primeiroVencimento"
+                                    name="primeiroVencimento"
+                                    type="date"
+                                    required
+                                >
+                                <small class="field-error">Informe o primeiro vencimento.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="periodicidadeParcelas">Periodicidade <span>*</span></label>
+                                <select
+                                    id="periodicidadeParcelas"
+                                    name="periodicidadeParcelas"
+                                    required
+                                    data-js="periodicidade-parcelas"
+                                >
+                                    <option value="mensal">Mensal</option>
+                                    <option value="quinzenal">Quinzenal</option>
+                                    <option value="semanal">Semanal</option>
+                                    <option value="diaria">Diária</option>
+                                    <option value="personalizada">Datas personalizadas</option>
+                                </select>
+                                <small class="field-error">Selecione a periodicidade.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="multa">Multa por atraso (%)</label>
+                                <input
+                                    id="multa"
+                                    name="multa"
+                                    type="number"
+                                    inputmode="decimal"
+                                    min="0"
+                                    max="100"
+                                    step="0.01"
+                                    placeholder="2,00"
+                                >
+                            </div>
+
+                            <div class="field">
+                                <label for="juros">Juros ao mês (%)</label>
+                                <input
+                                    id="juros"
+                                    name="juros"
+                                    type="number"
+                                    inputmode="decimal"
+                                    min="0"
+                                    max="100"
+                                    step="0.01"
+                                    placeholder="1,00"
+                                >
+                            </div>
+
+                            <div class="field field-full">
+                                <label for="observacoes">Observações adicionais</label>
+                                <textarea
+                                    id="observacoes"
+                                    name="observacoes"
+                                    rows="4"
+                                    maxlength="800"
+                                    placeholder="Inclua garantias, condições especiais ou outras informações relevantes."
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        <div class="installments-builder">
+                            <div class="installments-toolbar">
+                                <div>
+                                    <h4>Parcelas</h4>
+                                    <p>Defina a quantidade e edite livremente o valor e o vencimento de cada parcela.</p>
+                                </div>
+
+                                <div class="installments-controls">
+                                    <div class="field quantity-field">
+                                        <label for="quantidadeParcelas">Quantidade <span>*</span></label>
+                                        <input
+                                            id="quantidadeParcelas"
+                                            name="quantidadeParcelas"
+                                            type="number"
+                                            inputmode="numeric"
+                                            min="1"
+                                            max="60"
+                                            value="1"
+                                            required
+                                        >
+                                        <small class="field-error">Informe de 1 a 60 parcelas.</small>
+                                    </div>
+
+                                    <button class="button button-secondary" type="button" data-js="gerar-parcelas">
+                                        Gerar parcelas
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="installments-empty" data-js="parcelas-vazio">
+                                Nenhuma parcela gerada. Informe a quantidade e clique em “Gerar parcelas”.
+                            </div>
+
+                            <div class="installments-table-wrapper" data-js="parcelas-tabela" hidden>
+                                <table class="installments-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Parcela</th>
+                                            <th scope="col">Vencimento</th>
+                                            <th scope="col">Valor</th>
+                                            <th scope="col"><span class="sr-only">Ações</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-js="parcelas-corpo"></tbody>
+                                </table>
+                            </div>
+
+                            <div class="installments-summary" data-js="parcelas-resumo" hidden>
+                                <span>
+                                    Total das parcelas
+                                    <small data-js="diferenca-parcelas"></small>
+                                </span>
+                                <strong data-js="total-parcelas">R$ 0,00</strong>
+                            </div>
+
+                            <div class="next-sprint-note" role="note">
+                                <span class="note-icon" aria-hidden="true">i</span>
+                                <div>
+                                    <strong>Datas totalmente editáveis</strong>
+                                    <p>
+                                        A periodicidade apenas sugere os vencimentos iniciais. Depois de gerar,
+                                        todas as datas continuam livres para alteração individual.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="form-card" aria-labelledby="assinaturas-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">06</span>
+                            <div>
+                                <h3 id="assinaturas-title">Assinatura e testemunhas</h3>
+                                <p>Defina o local do instrumento e confira as testemunhas da minuta.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="cidadeDocumento">Cidade da assinatura <span>*</span></label>
+                                <input
+                                    id="cidadeDocumento"
+                                    name="cidadeDocumento"
+                                    type="text"
+                                    value="Parobé"
+                                    maxlength="80"
+                                    required
+                                >
+                                <small class="field-error">Informe a cidade da assinatura.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="foroDocumento">Foro eleito <span>*</span></label>
+                                <input
+                                    id="foroDocumento"
+                                    name="foroDocumento"
+                                    type="text"
+                                    value="Parobé"
+                                    maxlength="80"
+                                    required
+                                >
+                                <small class="field-error">Informe o foro eleito.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="testemunha1Nome">Testemunha 1 - Nome <span>*</span></label>
+                                <input
+                                    id="testemunha1Nome"
+                                    name="testemunha1Nome"
+                                    type="text"
+                                    value="Gustavo Souza da Silva"
+                                    maxlength="120"
+                                    required
+                                >
+                                <small class="field-error">Informe o nome da primeira testemunha.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="testemunha1Cpf">Testemunha 1 - CPF <span>*</span></label>
+                                <input
+                                    id="testemunha1Cpf"
+                                    name="testemunha1Cpf"
+                                    type="text"
+                                    inputmode="numeric"
+                                    value="040.941.670-30"
+                                    maxlength="14"
+                                    required
+                                    data-js="documento"
+                                >
+                                <small class="field-error">Informe o CPF da primeira testemunha.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="testemunha2Nome">Testemunha 2 - Nome <span>*</span></label>
+                                <input
+                                    id="testemunha2Nome"
+                                    name="testemunha2Nome"
+                                    type="text"
+                                    value="Adriane Barater de Morais"
+                                    maxlength="120"
+                                    required
+                                >
+                                <small class="field-error">Informe o nome da segunda testemunha.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="testemunha2Cpf">Testemunha 2 - CPF <span>*</span></label>
+                                <input
+                                    id="testemunha2Cpf"
+                                    name="testemunha2Cpf"
+                                    type="text"
+                                    inputmode="numeric"
+                                    value="777.949.150-15"
+                                    maxlength="14"
+                                    required
+                                    data-js="documento"
+                                >
+                                <small class="field-error">Informe o CPF da segunda testemunha.</small>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="form-feedback" role="status" aria-live="polite" data-js="feedback"></div>
+
+                    <div class="form-actions">
+                        <a class="button button-secondary" href="../index.html">Cancelar</a>
+                        <button class="button button-ghost" type="reset">Limpar formulário</button>
+                        <button class="button button-primary" type="submit">
+                            Gerar PDF
+                            <span aria-hidden="true">↓</span>
+                        </button>
+                    </div>
+                </form>
+            </main>
+
+            <footer class="page-footer">
+                <p>© <span data-js="ano-atual"></span> Contex. Todos os direitos reservados.</p>
+                <span>um produto Contex</span>
+            </footer>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" data-js="sidebar-overlay"></div>
+</body>
+
+</html>
+
