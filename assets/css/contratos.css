@@ -412,6 +412,59 @@ a.nav-item:hover {
     padding: 0 13px;
 }
 
+.cnpj-lookup {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 9px;
+}
+
+.lookup-button {
+    min-height: 48px;
+    padding: 0 15px;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-medium);
+    background: var(--color-primary-soft);
+    color: var(--color-primary-dark);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, opacity 160ms ease;
+}
+
+.lookup-button:hover:not(:disabled) {
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+.lookup-button:focus-visible {
+    outline: 3px solid rgba(10, 78, 138, 0.2);
+    outline-offset: 2px;
+}
+
+.lookup-button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.lookup-status {
+    min-height: 18px;
+    color: var(--color-muted);
+    font-size: 12px;
+}
+
+.lookup-status.is-success {
+    color: #157348;
+}
+
+.lookup-status.is-warning {
+    color: #8b6412;
+}
+
+.lookup-status.is-error {
+    color: var(--color-danger);
+}
+
 .field textarea {
     min-height: 112px;
     resize: vertical;
@@ -1082,6 +1135,10 @@ a.nav-item:hover {
     .form-grid {
         grid-template-columns: 1fr;
         gap: 18px;
+    }
+
+    .cnpj-lookup {
+        grid-template-columns: 1fr;
     }
 
     .model-options {
