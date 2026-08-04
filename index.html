@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Contex Docs — Sistema de geração e gestão de documentos."
+    >
+
+    <title>Contex Docs</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- Menu lateral -->
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+
+                <div class="brand-icon">
+                    CD
+                </div>
+
+                <div class="brand-text">
+                    <strong>Contex</strong>
+                    <span>Docs</span>
+                </div>
+
+            </div>
+
+            <nav class="sidebar-menu" aria-label="Menu principal">
+
+                <a href="index.html" class="menu-item active">
+                    <span class="menu-icon">⌂</span>
+                    <span>Início</span>
+                </a>
+
+                <a href="pages/confissao.html" class="menu-item">
+                    <span class="menu-icon">▤</span>
+                    <span>Confissão de Dívida</span>
+                </a>
+
+                <button
+                    type="button"
+                    class="menu-item menu-button"
+                    id="menuContratos"
+                >
+                    <span class="menu-icon">▧</span>
+                    <span>Contratos</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <span>Contex Docs</span>
+                <small>Versão 0.0.1</small>
+            </div>
+
+        </aside>
+
+        <!-- Área principal -->
+        <div class="main-wrapper">
+
+            <!-- Cabeçalho -->
+            <header class="topbar">
+
+                <div class="topbar-title">
+                    <h1>Contex Docs</h1>
+                    <p>Sistema de geração de documentos</p>
+                </div>
+
+                <div class="topbar-user">
+
+                    <div class="user-avatar">
+                        C
+                    </div>
+
+                    <div class="user-info">
+                        <strong>Contex</strong>
+                        <span>Administrador</span>
+                    </div>
+
+                </div>
+
+            </header>
+
+            <!-- Conteúdo -->
+            <main class="main-content">
+
+                <!-- Apresentação -->
+                <section class="hero-section">
+
+                    <div class="hero-content">
+
+                        <span class="hero-tag">
+                            Gestão de documentos
+                        </span>
+
+                        <h2>
+                            Documentos profissionais,
+                            <span>gerados em poucos minutos.</span>
+                        </h2>
+
+                        <p>
+                            Preencha as informações, organize as parcelas e
+                            gere documentos padronizados para a Contex.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="primary-button"
+                            id="btnNovaConfissao"
+                        >
+                            Nova Confissão de Dívida
+                        </button>
+
+                    </div>
+
+                    <div class="hero-visual" aria-hidden="true">
+
+                        <div class="document-preview">
+
+                            <div class="preview-header">
+                                <div class="preview-logo">C</div>
+
+                                <div class="preview-title">
+                                    <span></span>
+                                    <small></small>
+                                </div>
+                            </div>
+
+                            <div class="preview-line long"></div>
+                            <div class="preview-line medium"></div>
+                            <div class="preview-line short"></div>
+
+                            <div class="preview-boxes">
+                                <div></div>
+                                <div></div>
+                            </div>
+
+                            <div class="preview-line long"></div>
+                            <div class="preview-line medium"></div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- Módulos -->
+                <section class="modules-section">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span class="section-label">Módulos</span>
+                            <h2>O que você deseja fazer?</h2>
+                        </div>
+
+                        <p>
+                            Selecione um módulo para iniciar.
+                        </p>
+
+                    </div>
+
+                    <div class="modules-grid">
+
+                        <!-- Confissão de Dívida -->
+                        <article class="module-card available">
+
+                            <div class="module-card-header">
+
+                                <div class="module-icon">
+                                    $
+                                </div>
+
+                                <span class="status-badge status-active">
+                                    Disponível
+                                </span>
+
+                            </div>
+
+                            <div class="module-card-content">
+
+                                <h3>Confissão de Dívida</h3>
+
+                                <p>
+                                    Cadastre o devedor, fiador, origem da dívida,
+                                    condições de pagamento e parcelas.
+                                </p>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="module-button"
+                                id="btnConfissao"
+                            >
+                                Acessar módulo
+                                <span>→</span>
+                            </button>
+
+                        </article>
+
+                        <!-- Contratos -->
+                        <article class="module-card development">
+
+                            <div class="module-card-header">
+
+                                <div class="module-icon">
+                                    §
+                                </div>
+
+                                <span class="status-badge status-development">
+                                    Em desenvolvimento
+                                </span>
+
+                            </div>
+
+                            <div class="module-card-content">
+
+                                <h3>Contratos</h3>
+
+                                <p>
+                                    Criação e organização de contratos
+                                    personalizados utilizando modelos da Contex.
+                                </p>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="module-button secondary"
+                                id="btnContratos"
+                            >
+                                Ver informações
+                                <span>→</span>
+                            </button>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+                <!-- Etapas do processo -->
+                <section class="process-section">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span class="section-label">Funcionamento</span>
+                            <h2>Um processo simples e seguro</h2>
+                        </div>
+
+                    </div>
+
+                    <div class="process-grid">
+
+                        <article class="process-card">
+
+                            <span class="process-number">01</span>
+
+                            <div>
+                                <h3>Preencha os dados</h3>
+                                <p>
+                                    Informe os dados das partes e as condições
+                                    do documento.
+                                </p>
+                            </div>
+
+                        </article>
+
+                        <article class="process-card">
+
+                            <span class="process-number">02</span>
+
+                            <div>
+                                <h3>Revise as informações</h3>
+                                <p>
+                                    Confira os dados antes de concluir a
+                                    geração do documento.
+                                </p>
+                            </div>
+
+                        </article>
+
+                        <article class="process-card">
+
+                            <span class="process-number">03</span>
+
+                            <div>
+                                <h3>Gere o PDF</h3>
+                                <p>
+                                    Baixe o documento finalizado, pronto para
+                                    assinatura.
+                                </p>
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+            </main>
+
+            <!-- Rodapé -->
+            <footer class="footer">
+                <p>
+                    © 2026 Contex. Todos os direitos reservados.
+                </p>
+
+                <span>
+                    um produto Contex
+                </span>
+            </footer>
+
+        </div>
+
+    </div>
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
