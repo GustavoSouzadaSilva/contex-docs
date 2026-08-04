@@ -203,6 +203,33 @@ if (contratoForm) {
         return rows;
     }
 
+    function montarAssinaturas(rows, valores) {
+        const papeis = /^(CONTRATANTE|CONTRATADO|CONTRATADA|TESTEMUNHA)$/;
+        const itens = rows.flatMap((row) => row).filter((cell) => cell.trim()).map((cell) => {
+            const textoPreenchido = Object.entries(valores).reduce(
+                (texto, [marcador, valor]) => texto.split(marcador).join(valor),
+                cell
+            );
+            const linhas = textoPreenchido.split("\n").map((linha) => linha.trim()).filter(Boolean);
+            const indicePapel = linhas.findIndex((linha) => papeis.test(linha.toUpperCase()));
+            let papel = indicePapel >= 0 ? linhas.splice(indicePapel, 1)[0].toUpperCase() : "ASSINATURA";
+
+            if (papel === "CONTRATADO") {
+                papel = "CONTRATADA";
+            }
+
+            return `
+                <div class="signature-item">
+                    <span class="signature-line" aria-hidden="true"></span>
+                    <strong class="signature-role">${escaparHtml(papel)}</strong>
+                    <span class="signature-name">${linhas.map(escaparHtml).join("<br>")}</span>
+                </div>
+            `;
+        }).join("");
+
+        return `<div class="signature-grid">${itens}</div>`;
+    }
+
     function montarBlocos(modelo, valores) {
         let indiceTabela = 0;
         return modelo.blocks.map((bloco) => {
@@ -210,6 +237,11 @@ if (contratoForm) {
                 if (bloco.kind === "spacer") {
                     return '<div class="doc-spacer" aria-hidden="true"></div>';
                 }
+
+                if (bloco.text.trim().toLowerCase() === "testemunhas:") {
+                    return `<p class="doc-witness-title">${preencherTexto(bloco.text, valores)}</p>`;
+                }
+
                 return `<p class="doc-${bloco.kind}">${preencherTexto(bloco.text, valores)}</p>`;
             }
 
@@ -221,13 +253,16 @@ if (contratoForm) {
                 rows = prepararTabelaBrasil(rows, atual, valores);
             }
 
-            const classe = atual === 0 && modeloSelecionado() === "digital"
-                ? "doc-table qualification-table"
-                : "doc-table signature-table";
+            const tabelaQualificacao = atual === 0 && modeloSelecionado() === "digital";
+
+            if (!tabelaQualificacao) {
+                return montarAssinaturas(rows, valores);
+            }
+
             const corpo = rows.map((row) => `
                 <tr>${row.map((cell) => `<td>${preencherTexto(cell, valores)}</td>`).join("")}</tr>
             `).join("");
-            return `<table class="${classe}"><tbody>${corpo}</tbody></table>`;
+            return `<table class="doc-table qualification-table"><tbody>${corpo}</tbody></table>`;
         }).join("");
     }
 
@@ -262,8 +297,12 @@ if (contratoForm) {
                     .doc-table td { padding: 8pt; vertical-align: top; white-space: normal; }
                     .qualification-table td { border: 1px solid #000; }
                     .qualification-table td:first-child { width: 25%; font-weight: 700; }
-                    .signature-table { margin-top: 28pt; table-layout: fixed; }
-                    .signature-table td { padding: 24pt 10pt 4pt; border-top: 1px solid #000; text-align: center; vertical-align: bottom; }
+                    .doc-witness-title { margin: 24pt 0 0; font-weight: 700; text-align: left; }
+                    .signature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32pt 42pt; margin: 34pt 0 24pt; page-break-inside: avoid; break-inside: avoid; }
+                    .signature-item { min-width: 0; text-align: center; page-break-inside: avoid; break-inside: avoid; }
+                    .signature-line { display: block; width: 100%; margin-bottom: 7pt; border-top: 1px solid #000; }
+                    .signature-role { display: block; margin-bottom: 3pt; font-size: 10.5pt; font-weight: 700; }
+                    .signature-name { display: block; font-size: 10.5pt; line-height: 1.25; }
                     .screen-toolbar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: center; gap: 10px; padding: 12px; background: #eef3f7; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
                     .screen-toolbar button { padding: 10px 18px; border: 0; border-radius: 7px; background: #0a4e8a; color: #fff; font: 700 14px Arial, sans-serif; cursor: pointer; }
                     @media screen { body { background: #dfe5ea; } .document { box-shadow: 0 5px 25px rgba(0,0,0,.15); } }
