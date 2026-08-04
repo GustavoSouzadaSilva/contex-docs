@@ -18,7 +18,7 @@ botoesConfissao.forEach((botao) => {
 
 botoesContratos.forEach((botao) => {
     botao.addEventListener("click", () => {
-        window.alert("Módulo em desenvolvimento.");
+        window.location.href = "pages/contratos.html";
     });
 });
 
