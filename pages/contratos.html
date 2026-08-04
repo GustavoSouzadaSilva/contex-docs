@@ -180,17 +180,23 @@
 
                             <div class="field">
                                 <label for="cnpjEmpresa">CNPJ <span>*</span></label>
-                                <input
-                                    id="cnpjEmpresa"
-                                    name="cnpjEmpresa"
-                                    type="text"
-                                    inputmode="numeric"
-                                    maxlength="18"
-                                    placeholder="00.000.000/0000-00"
-                                    required
-                                    data-js="cnpj"
-                                >
+                                <div class="cnpj-lookup">
+                                    <input
+                                        id="cnpjEmpresa"
+                                        name="cnpjEmpresa"
+                                        type="text"
+                                        inputmode="numeric"
+                                        maxlength="18"
+                                        placeholder="00.000.000/0000-00"
+                                        required
+                                        data-js="cnpj"
+                                    >
+                                    <button class="lookup-button" type="button" data-js="buscar-cnpj">
+                                        Buscar dados
+                                    </button>
+                                </div>
                                 <small class="field-error">Informe o CNPJ.</small>
+                                <small class="lookup-status" data-js="status-cnpj" aria-live="polite"></small>
                             </div>
 
                             <div class="field">
