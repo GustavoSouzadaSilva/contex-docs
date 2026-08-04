@@ -12,6 +12,8 @@ if (contratoForm) {
     const inicioContrato = document.getElementById("inicioContrato");
     const menuToggle = document.querySelector('[data-js="menu-toggle"]');
     const sidebarOverlay = document.querySelector('[data-js="sidebar-overlay"]');
+    const botaoBuscarCnpj = document.querySelector('[data-js="buscar-cnpj"]');
+    const statusCnpj = document.querySelector('[data-js="status-cnpj"]');
 
     const detalhesPorModelo = {
         brasil: `
@@ -45,6 +47,23 @@ if (contratoForm) {
             .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
             .replace(/\.(\d{3})(\d)/, ".$1/$2")
             .replace(/(\d{4})(\d)/, "$1-$2");
+    }
+
+    function cnpjValido(cnpj) {
+        if (!/^\d{14}$/.test(cnpj) || /^(\d)\1{13}$/.test(cnpj)) {
+            return false;
+        }
+
+        const calcularDigito = (base, pesos) => {
+            const soma = base.split("").reduce((total, numero, indice) => {
+                return total + Number(numero) * pesos[indice];
+            }, 0);
+            const resto = soma % 11;
+            return resto < 2 ? 0 : 11 - resto;
+        };
+        const primeiro = calcularDigito(cnpj.slice(0, 12), [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+        const segundo = calcularDigito(cnpj.slice(0, 12) + primeiro, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+        return cnpj.endsWith(`${primeiro}${segundo}`);
     }
 
     function formatarCep(valor) {
@@ -138,6 +157,79 @@ if (contratoForm) {
     function esconderFeedback() {
         feedback.textContent = "";
         feedback.className = "form-feedback";
+    }
+
+    function atualizarStatusCnpj(mensagem, tipo = "") {
+        statusCnpj.textContent = mensagem;
+        statusCnpj.className = `lookup-status${tipo ? ` is-${tipo}` : ""}`;
+    }
+
+    function preencherCampo(id, valor) {
+        const input = document.getElementById(id);
+        if (!input || valor === null || valor === undefined || String(valor).trim() === "") {
+            return;
+        }
+
+        input.value = String(valor).trim();
+        atualizarEstadoDoCampo(input);
+    }
+
+    async function buscarDadosCnpj() {
+        const cnpj = somenteNumeros(campo("cnpjEmpresa"));
+
+        if (!cnpjValido(cnpj)) {
+            atualizarStatusCnpj("Digite um CNPJ válido com 14 números.", "error");
+            document.getElementById("cnpjEmpresa").focus();
+            return;
+        }
+
+        botaoBuscarCnpj.disabled = true;
+        botaoBuscarCnpj.textContent = "Consultando...";
+        atualizarStatusCnpj("Consultando os dados públicos do CNPJ...");
+
+        try {
+            const resposta = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`, {
+                headers: { Accept: "application/json" }
+            });
+            const dados = await resposta.json().catch(() => ({}));
+
+            if (!resposta.ok) {
+                const mensagem = resposta.status === 404
+                    ? "CNPJ não encontrado na base consultada."
+                    : dados.message || "Não foi possível consultar o CNPJ agora.";
+                throw new Error(mensagem);
+            }
+
+            const tipoLogradouro = String(dados.descricao_tipo_de_logradouro || "").trim();
+            const logradouro = String(dados.logradouro || "").trim();
+            const ruaCompleta = tipoLogradouro && !logradouro.toUpperCase().startsWith(tipoLogradouro.toUpperCase())
+                ? `${tipoLogradouro} ${logradouro}`
+                : logradouro;
+            const cep = dados.cep ? String(dados.cep).padStart(8, "0") : "";
+
+            preencherCampo("nomeEmpresa", dados.razao_social);
+            preencherCampo("ruaEmpresa", ruaCompleta);
+            preencherCampo("numeroEmpresa", dados.numero || "S/N");
+            preencherCampo("bairroEmpresa", dados.bairro);
+            preencherCampo("cidadeEmpresa", dados.municipio);
+            preencherCampo("estadoEmpresa", dados.uf);
+            preencherCampo("cepEmpresa", formatarCep(cep));
+
+            const situacao = String(dados.descricao_situacao_cadastral || "NÃO INFORMADA").toUpperCase();
+            const tipoStatus = situacao === "ATIVA" ? "success" : "warning";
+            atualizarStatusCnpj(
+                `Dados encontrados. Situação cadastral: ${situacao}. Confira as informações e informe o representante legal.`,
+                tipoStatus
+            );
+        } catch (erro) {
+            const mensagem = erro instanceof TypeError
+                ? "Não foi possível acessar o serviço de consulta. Verifique a internet e tente novamente."
+                : erro.message;
+            atualizarStatusCnpj(mensagem, "error");
+        } finally {
+            botaoBuscarCnpj.disabled = false;
+            botaoBuscarCnpj.textContent = "Buscar dados";
+        }
     }
 
     function escaparHtml(valor) {
@@ -355,7 +447,10 @@ if (contratoForm) {
 
     contratoForm.querySelector('[data-js="cnpj"]')?.addEventListener("input", (evento) => {
         evento.currentTarget.value = formatarCnpj(evento.currentTarget.value);
+        atualizarStatusCnpj("");
     });
+
+    botaoBuscarCnpj?.addEventListener("click", buscarDadosCnpj);
 
     contratoForm.querySelector('[data-js="cep"]')?.addEventListener("input", (evento) => {
         evento.currentTarget.value = formatarCep(evento.currentTarget.value);
@@ -392,6 +487,7 @@ if (contratoForm) {
             dataContrato.value = dataLocalHoje();
             inicioContrato.value = dataLocalHoje();
             atualizarModelo();
+            atualizarStatusCnpj("");
             esconderFeedback();
         });
     });
