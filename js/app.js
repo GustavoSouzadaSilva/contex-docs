@@ -1,24 +1,14 @@
 "use strict";
 
-const botoesConfissao = [
-    document.getElementById("btnConfissao"),
-    document.getElementById("btnNovaConfissao")
-].filter(Boolean);
+const rotasDosModulos = [
+    ["btnConfissao", "pages/confissao.html"],
+    ["btnNovaConfissao", "pages/confissao.html"],
+    ["btnContratos", "pages/contratos.html"],
+    ["btnDistratos", "pages/distrato.html"]
+];
 
-const botoesContratos = [
-    document.getElementById("btnContratos"),
-    document.getElementById("menuContratos")
-].filter(Boolean);
-
-botoesConfissao.forEach((botao) => {
-    botao.addEventListener("click", () => {
-        window.location.href = "pages/confissao.html";
+rotasDosModulos.forEach(([id, rota]) => {
+    document.getElementById(id)?.addEventListener("click", () => {
+        window.location.href = rota;
     });
 });
-
-botoesContratos.forEach((botao) => {
-    botao.addEventListener("click", () => {
-        window.location.href = "pages/contratos.html";
-    });
-});
-
