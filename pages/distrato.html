@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Formulário para geração de distratos contratuais da Contex Brasil e Contex Digital.">
+    <title>Novo Distrato | Contex Docs</title>
+    <link rel="stylesheet" href="../assets/css/contratos.css">
+    <link rel="stylesheet" href="../assets/css/distrato.css">
+    <script src="../assets/js/distrato.js" defer></script>
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="../index.html" aria-label="Ir para o início">
+                <span class="brand-mark" aria-hidden="true">CD</span>
+                <span class="brand-name"><strong>Contex</strong><span>Docs</span></span>
+            </a>
+
+            <nav class="sidebar-nav" aria-label="Menu principal">
+                <a class="nav-item" href="../index.html">
+                    <span class="nav-icon" aria-hidden="true">⌂</span><span>Início</span>
+                </a>
+                <a class="nav-item" href="confissao.html">
+                    <span class="nav-icon" aria-hidden="true">▤</span><span>Confissão de Dívida</span>
+                </a>
+                <a class="nav-item" href="contratos.html">
+                    <span class="nav-icon" aria-hidden="true">▧</span><span>Contratos</span>
+                </a>
+                <a class="nav-item is-active" href="distrato.html" aria-current="page">
+                    <span class="nav-icon" aria-hidden="true">×</span><span>Distratos</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer"><span>Contex Docs</span><small>Versão 0.0.4</small></div>
+        </aside>
+
+        <div class="page-shell">
+            <header class="topbar">
+                <button class="menu-toggle" type="button" aria-label="Abrir ou fechar menu" aria-expanded="false" data-js="menu-toggle">
+                    <span></span><span></span><span></span>
+                </button>
+                <div><span class="eyebrow">Documentos jurídicos</span><h1>Novo Distrato</h1></div>
+                <div class="topbar-user" aria-label="Usuário atual">
+                    <span class="user-avatar" aria-hidden="true">C</span>
+                    <span><strong>Contex</strong><small>Administrador</small></span>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <nav class="breadcrumb" aria-label="Navegação estrutural">
+                    <a href="../index.html">Início</a><span aria-hidden="true">/</span><span>Distratos</span>
+                </nav>
+
+                <section class="page-intro" aria-labelledby="page-title">
+                    <div>
+                        <span class="section-kicker">Módulo de distratos</span>
+                        <h2 id="page-title">Encerramento contratual</h2>
+                        <p>Preencha os dados do cliente e as condições finais para gerar o termo de distrato.</p>
+                    </div>
+                    <div class="status-chip"><span aria-hidden="true"></span>Rascunho não salvo</div>
+                </section>
+
+                <form id="distratoForm" novalidate>
+                    <section class="form-card" aria-labelledby="modelo-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">01</span>
+                            <div><h3 id="modelo-title">Empresa contratada</h3><p>Selecione a empresa Contex responsável pelo contrato.</p></div>
+                        </div>
+
+                        <fieldset class="model-selector field">
+                            <legend>Modelo do distrato <span>*</span></legend>
+                            <div class="model-options">
+                                <label class="model-option">
+                                    <input type="radio" name="modeloDistrato" value="brasil" required>
+                                    <span class="model-radio" aria-hidden="true"></span>
+                                    <span class="model-content"><strong>Contex Brasil</strong><small>CNPJ 04.244.373/0001-69</small><em>Foro de Parobé/RS</em></span>
+                                </label>
+                                <label class="model-option">
+                                    <input type="radio" name="modeloDistrato" value="digital" required>
+                                    <span class="model-radio" aria-hidden="true"></span>
+                                    <span class="model-content"><strong>Contex Digital</strong><small>CNPJ 34.199.150/0001-98</small><em>Foro de Três Coroas/RS</em></span>
+                                </label>
+                            </div>
+                            <small class="field-error">Selecione a empresa contratada.</small>
+                        </fieldset>
+                    </section>
+
+                    <section class="form-card" aria-labelledby="cliente-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">02</span>
+                            <div><h3 id="cliente-title">Dados da contratante</h3><p>Busque o CNPJ e confira os dados antes de continuar.</p></div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="field field-full">
+                                <label for="razaoSocial">Razão social <span>*</span></label>
+                                <input id="razaoSocial" name="razaoSocial" type="text" maxlength="150" required>
+                                <small class="field-error">Informe a razão social.</small>
+                            </div>
+                            <div class="field field-full">
+                                <label for="cnpjCliente">CNPJ <span>*</span></label>
+                                <div class="cnpj-lookup">
+                                    <input id="cnpjCliente" name="cnpjCliente" type="text" inputmode="numeric" maxlength="18" placeholder="00.000.000/0000-00" required data-js="cnpj">
+                                    <button class="lookup-button" type="button" data-js="buscar-cnpj">Buscar dados</button>
+                                </div>
+                                <small class="field-error">Informe um CNPJ válido.</small>
+                                <small class="lookup-status" data-js="status-cnpj" aria-live="polite"></small>
+                            </div>
+                            <div class="field">
+                                <label for="representanteCliente">Representante legal <span>*</span></label>
+                                <input id="representanteCliente" name="representanteCliente" type="text" maxlength="120" required>
+                                <small class="field-error">Informe o representante legal.</small>
+                            </div>
+                            <div class="field">
+                                <label for="cpfRepresentante">CPF do representante <span>*</span></label>
+                                <input id="cpfRepresentante" name="cpfRepresentante" type="text" inputmode="numeric" maxlength="14" required data-js="cpf">
+                                <small class="field-error">Informe o CPF do representante.</small>
+                            </div>
+                            <div class="field"><label for="logradouro">Logradouro <span>*</span></label><input id="logradouro" name="logradouro" type="text" maxlength="120" required><small class="field-error">Informe o logradouro.</small></div>
+                            <div class="field"><label for="numero">Número <span>*</span></label><input id="numero" name="numero" type="text" maxlength="20" required><small class="field-error">Informe o número.</small></div>
+                            <div class="field"><label for="bairro">Bairro <span>*</span></label><input id="bairro" name="bairro" type="text" maxlength="80" required><small class="field-error">Informe o bairro.</small></div>
+                            <div class="field"><label for="cidade">Cidade <span>*</span></label><input id="cidade" name="cidade" type="text" maxlength="80" required><small class="field-error">Informe a cidade.</small></div>
+                            <div class="field"><label for="uf">UF <span>*</span></label><input id="uf" name="uf" type="text" maxlength="2" required><small class="field-error">Informe a UF.</small></div>
+                            <div class="field"><label for="cep">CEP <span>*</span></label><input id="cep" name="cep" type="text" inputmode="numeric" maxlength="9" required data-js="cep"><small class="field-error">Informe o CEP.</small></div>
+                        </div>
+                    </section>
+
+                    <section class="form-card" aria-labelledby="encerramento-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">03</span>
+                            <div><h3 id="encerramento-title">Condições do encerramento</h3><p>Identifique o contrato e registre como ocorrerá seu término.</p></div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="field"><label for="dataContratoOriginal">Data do contrato original <span>*</span></label><input id="dataContratoOriginal" name="dataContratoOriginal" type="date" required><small class="field-error">Informe a data do contrato original.</small></div>
+                            <div class="field"><label for="dataEncerramento">Encerramento a partir de <span>*</span></label><input id="dataEncerramento" name="dataEncerramento" type="date" required><small class="field-error">Informe a data de encerramento.</small></div>
+                            <div class="field">
+                                <label for="parteSolicitante">Distrato solicitado pela <span>*</span></label>
+                                <select id="parteSolicitante" name="parteSolicitante" required><option value="">Selecione</option><option value="CONTRATANTE">Contratante</option><option value="CONTRATADA">Contratada</option></select>
+                                <small class="field-error">Selecione a parte solicitante.</small>
+                            </div>
+                            <div class="field"><label for="ultimaCompetencia">Última competência <span>*</span></label><input id="ultimaCompetencia" name="ultimaCompetencia" type="month" required><small class="field-error">Informe a última competência.</small></div>
+                            <div class="field field-full"><label for="motivoDistrato">Motivo do distrato <span>*</span></label><textarea id="motivoDistrato" name="motivoDistrato" rows="4" maxlength="800" required placeholder="Descreva objetivamente o motivo do encerramento."></textarea><small class="field-error">Informe o motivo do distrato.</small></div>
+                        </div>
+                    </section>
+
+                    <section class="form-card" aria-labelledby="financeiro-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">04</span>
+                            <div><h3 id="financeiro-title">Acerto financeiro</h3><p>Registre multa, último pagamento e eventual obrigação ainda pendente.</p></div>
+                        </div>
+
+                        <div class="form-grid">
+                            <fieldset class="field field-full compact-choice">
+                                <legend>Existe multa de rescisão? <span>*</span></legend>
+                                <div class="choice-row"><label><input type="radio" name="temMulta" value="nao" checked> Não</label><label><input type="radio" name="temMulta" value="sim"> Sim</label></div>
+                            </fieldset>
+                            <div class="conditional-grid field-full" data-js="campos-multa" hidden>
+                                <div class="field"><label for="valorMulta">Valor da multa <span>*</span></label><div class="input-prefix"><span>R$</span><input id="valorMulta" name="valorMulta" type="text" inputmode="numeric" data-js="moeda"></div><small class="field-error">Informe o valor da multa.</small></div>
+                                <div class="field"><label for="vencimentoMulta">Vencimento da multa <span>*</span></label><input id="vencimentoMulta" name="vencimentoMulta" type="date"><small class="field-error">Informe o vencimento.</small></div>
+                            </div>
+
+                            <fieldset class="field field-full compact-choice">
+                                <legend>Haverá último pagamento? <span>*</span></legend>
+                                <div class="choice-row"><label><input type="radio" name="temUltimoPagamento" value="sim" checked> Sim</label><label><input type="radio" name="temUltimoPagamento" value="nao"> Não</label></div>
+                            </fieldset>
+                            <div class="conditional-grid field-full" data-js="campos-pagamento">
+                                <div class="field"><label for="valorUltimoPagamento">Valor <span>*</span></label><div class="input-prefix"><span>R$</span><input id="valorUltimoPagamento" name="valorUltimoPagamento" type="text" inputmode="numeric" data-js="moeda" required></div><small class="field-error">Informe o valor.</small></div>
+                                <div class="field"><label for="vencimentoUltimoPagamento">Vencimento <span>*</span></label><input id="vencimentoUltimoPagamento" name="vencimentoUltimoPagamento" type="date" required><small class="field-error">Informe o vencimento.</small></div>
+                            </div>
+                            <div class="field field-full"><label for="obrigacoesPendentes">Outras obrigações pendentes</label><textarea id="obrigacoesPendentes" name="obrigacoesPendentes" rows="3" maxlength="1000" placeholder="Deixe em branco quando não houver outras obrigações."></textarea></div>
+                        </div>
+                    </section>
+
+                    <section class="form-card" aria-labelledby="assinaturas-title">
+                        <div class="card-heading">
+                            <span class="step-number" aria-hidden="true">05</span>
+                            <div><h3 id="assinaturas-title">Formalização e assinaturas</h3><p>As duas partes sempre assinam. As testemunhas podem ser dispensadas na assinatura eletrônica.</p></div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="field"><label for="cidadeAssinatura">Cidade da assinatura <span>*</span></label><input id="cidadeAssinatura" name="cidadeAssinatura" type="text" maxlength="80" required><small class="field-error">Informe a cidade.</small></div>
+                            <div class="field"><label for="dataDistrato">Data do distrato <span>*</span></label><input id="dataDistrato" name="dataDistrato" type="date" required><small class="field-error">Informe a data.</small></div>
+                            <label class="witness-toggle field-full"><input type="checkbox" id="incluirTestemunhas" name="incluirTestemunhas" checked><span><strong>Incluir duas testemunhas</strong><small>Recomendado para documentos assinados manualmente.</small></span></label>
+                            <div class="conditional-grid field-full" data-js="campos-testemunhas">
+                                <div class="field"><label for="testemunha1Nome">Testemunha 1 — Nome <span>*</span></label><input id="testemunha1Nome" name="testemunha1Nome" type="text" value="Gustavo Souza da Silva" maxlength="120" required><small class="field-error">Informe o nome.</small></div>
+                                <div class="field"><label for="testemunha1Cpf">Testemunha 1 — CPF <span>*</span></label><input id="testemunha1Cpf" name="testemunha1Cpf" type="text" inputmode="numeric" value="040.941.670-30" maxlength="14" required data-js="cpf"><small class="field-error">Informe o CPF.</small></div>
+                                <div class="field"><label for="testemunha2Nome">Testemunha 2 — Nome <span>*</span></label><input id="testemunha2Nome" name="testemunha2Nome" type="text" value="Paola Eltz" maxlength="120" required><small class="field-error">Informe o nome.</small></div>
+                                <div class="field"><label for="testemunha2Cpf">Testemunha 2 — CPF <span>*</span></label><input id="testemunha2Cpf" name="testemunha2Cpf" type="text" inputmode="numeric" value="028.753.400-69" maxlength="14" required data-js="cpf"><small class="field-error">Informe o CPF.</small></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="form-feedback" data-js="feedback" role="status" aria-live="polite"></div>
+                    <div class="form-actions">
+                        <button class="button button-ghost" type="reset">Limpar formulário</button>
+                        <button class="button button-primary" type="submit">Revisar e gerar distrato</button>
+                    </div>
+                </form>
+            </main>
+
+            <footer class="page-footer"><span>© <span data-js="ano-atual"></span> Contex</span><span>Dados preenchidos somente nesta sessão</span></footer>
+        </div>
+    </div>
+    <button class="sidebar-overlay" type="button" aria-label="Fechar menu" data-js="sidebar-overlay"></button>
+</body>
+
+</html>
