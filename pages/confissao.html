@@ -1,3 +1,6 @@
+Exit code: 0
+Wall time: 1.1 seconds
+Output:
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -50,7 +53,7 @@
 
             <div class="sidebar-footer">
                 <span>Contex Docs</span>
-                <small>Versão 0.0.4</small>
+                <small>Versão 0.0.5</small>
             </div>
         </aside>
 
@@ -143,21 +146,32 @@
                                 <small class="field-error">Informe o nome do devedor.</small>
                             </div>
 
-                            <div class="field">
+                            <div class="field field-full">
                                 <label for="documentoDevedor" data-js="label-documento">
                                     CPF / CNPJ <span>*</span>
                                 </label>
-                                <input
-                                    id="documentoDevedor"
-                                    name="documentoDevedor"
-                                    type="text"
-                                    inputmode="numeric"
-                                    maxlength="18"
-                                    placeholder="Digite somente números"
-                                    required
-                                    data-js="documento"
-                                >
+                                <div class="cnpj-lookup">
+                                    <input
+                                        id="documentoDevedor"
+                                        name="documentoDevedor"
+                                        type="text"
+                                        inputmode="numeric"
+                                        maxlength="18"
+                                        placeholder="Digite somente números"
+                                        required
+                                        data-js="documento"
+                                    >
+                                    <button
+                                        class="lookup-button"
+                                        type="button"
+                                        data-js="buscar-cnpj-devedor"
+                                        hidden
+                                    >
+                                        Buscar dados
+                                    </button>
+                                </div>
                                 <small class="field-error">Informe o CPF ou CNPJ.</small>
+                                <small class="lookup-status" data-js="status-cnpj-devedor" aria-live="polite"></small>
                             </div>
 
                             <div class="field">
@@ -699,3 +713,4 @@
 </body>
 
 </html>
+
