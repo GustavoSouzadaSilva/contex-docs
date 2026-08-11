@@ -1,6 +1,3 @@
-Exit code: 0
-Wall time: 1 seconds
-Output:
 # Contex Docs
 
 Sistema interno da Contex Brasil para geração de documentos jurídicos e comerciais.
