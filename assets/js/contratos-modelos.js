@@ -1,3 +1,6 @@
+Exit code: 0
+Wall time: 0.9 seconds
+Output:
 "use strict";
 
 window.CONTEX_CONTRACT_MODELS = {
@@ -233,7 +236,7 @@ window.CONTEX_CONTRACT_MODELS = {
       {
         "type": "paragraph",
         "kind": "paragraph",
-        "text": "4.2. Para a execução dos serviços constantes da Cláusula Primeira, a CONTRATANTE pagará à CONTRATADA os honorários profissionais correspondentes a R$ {{Valor}} mensais, até o dia {{DATA_VENCIMENTO}} do mês subseqüente ao vencido, podendo a cobrança ser  veiculada por meio da respectiva duplicata de serviços, mantida em carteira ou via cobrança bancária. "
+        "text": "4.2. Para a execução dos serviços constantes da Cláusula Primeira, a CONTRATANTE pagará à CONTRATADA os honorários profissionais correspondentes a R$ {{Valor}} mensais, com primeiro vencimento em {{PRIMEIRO_VENCIMENTO}} e os demais vencimentos até o dia {{DATA_VENCIMENTO}} dos meses subsequentes, podendo a cobrança ser veiculada por meio da respectiva duplicata de serviços, mantida em carteira ou via cobrança bancária. "
       },
       {
         "type": "paragraph",
@@ -640,7 +643,7 @@ window.CONTEX_CONTRACT_MODELS = {
       {
         "type": "paragraph",
         "kind": "paragraph",
-        "text": "O CONTRATANTE pagará ao CONTRATADO pelos serviços prestados os honorários mensais de R$ {{VALOR}} com vencimento todo dia {{DATA}} de cada mês."
+        "text": "O CONTRATANTE pagará ao CONTRATADO pelos serviços prestados os honorários mensais de R$ {{VALOR}}, com primeiro vencimento em {{PRIMEIRO_VENCIMENTO}} e os demais vencimentos todo dia {{DATA}} de cada mês."
       },
       {
         "type": "paragraph",
