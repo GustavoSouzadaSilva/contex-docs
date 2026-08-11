@@ -1,3 +1,6 @@
+Exit code: 0
+Wall time: 0.9 seconds
+Output:
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -51,7 +54,7 @@
 
             <div class="sidebar-footer">
                 <span>Contex Docs</span>
-                <small>Versão 0.0.4</small>
+                <small>Versão 0.0.5</small>
             </div>
         </aside>
 
@@ -319,7 +322,7 @@
                             <span class="step-number" aria-hidden="true">03</span>
                             <div>
                                 <h3 id="condicoes-title">Condições e datas</h3>
-                                <p>Defina o valor dos honorários, vencimento e vigência.</p>
+                                <p>Defina o valor dos honorários, o primeiro vencimento, os demais vencimentos e a vigência.</p>
                             </div>
                         </div>
 
@@ -342,7 +345,18 @@
                             </div>
 
                             <div class="field">
-                                <label for="diaVencimento">Dia do vencimento <span>*</span></label>
+                                <label for="primeiroVencimento">Primeiro vencimento <span>*</span></label>
+                                <input
+                                    id="primeiroVencimento"
+                                    name="primeiroVencimento"
+                                    type="date"
+                                    required
+                                >
+                                <small class="field-error">Informe a data do primeiro vencimento.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="diaVencimento">Dia dos demais vencimentos <span>*</span></label>
                                 <input
                                     id="diaVencimento"
                                     name="diaVencimento"
@@ -376,6 +390,20 @@
                                     required
                                 >
                                 <small class="field-error">Informe a data do contrato.</small>
+                            </div>
+
+                            <div class="field field-full">
+                                <label for="observacoesContrato">Condições especiais / observações</label>
+                                <textarea
+                                    id="observacoesContrato"
+                                    name="observacoesContrato"
+                                    rows="5"
+                                    maxlength="1800"
+                                    placeholder="Ex.: isenção dos dois primeiros meses; ausência de adicional de final de ano; desconto de 20% nos três primeiros honorários."
+                                ></textarea>
+                                <small class="field-hint">
+                                    O conteúdo será incluído no contrato como “Condições Especiais”. Deixe em branco quando não houver condição diferenciada.
+                                </small>
                             </div>
                         </div>
                     </section>
@@ -471,3 +499,4 @@
 </body>
 
 </html>
+
