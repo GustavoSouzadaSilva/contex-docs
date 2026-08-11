@@ -1,6 +1,3 @@
-Exit code: 0
-Wall time: 0.8 seconds
-Output:
 "use strict";
 
 const contratoForm = document.getElementById("contratoForm");
