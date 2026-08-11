@@ -1,3 +1,6 @@
+Exit code: 0
+Wall time: 0.8 seconds
+Output:
 "use strict";
 
 const form = document.getElementById("confissaoForm");
@@ -18,6 +21,8 @@ if (form) {
     const documentoDevedor = document.getElementById("documentoDevedor");
     const labelNome = form.querySelector('[data-js="label-nome"]');
     const labelDocumento = form.querySelector('[data-js="label-documento"]');
+    const botaoBuscarCnpj = form.querySelector('[data-js="buscar-cnpj-devedor"]');
+    const statusCnpj = form.querySelector('[data-js="status-cnpj-devedor"]');
     const origemDivida = document.getElementById("origemDivida");
     const contadorOrigem = form.querySelector('[data-js="contador-origem"]');
     const feedback = form.querySelector('[data-js="feedback"]');
@@ -56,6 +61,23 @@ if (form) {
             .replace(/(\d{3})(\d)/, "$1.$2")
             .replace(/(\d{3})(\d)/, "$1/$2")
             .replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+    }
+
+    function cnpjValido(cnpj) {
+        if (!/^\d{14}$/.test(cnpj) || /^(\d)\1{13}$/.test(cnpj)) {
+            return false;
+        }
+
+        const calcularDigito = (base, pesos) => {
+            const soma = base.split("").reduce((total, numero, indice) => {
+                return total + Number(numero) * pesos[indice];
+            }, 0);
+            const resto = soma % 11;
+            return resto < 2 ? 0 : 11 - resto;
+        };
+        const primeiro = calcularDigito(cnpj.slice(0, 12), [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+        const segundo = calcularDigito(cnpj.slice(0, 12) + primeiro, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+        return cnpj.endsWith(`${primeiro}${segundo}`);
     }
 
     function formatarTelefone(valor) {
@@ -167,6 +189,12 @@ if (form) {
         const pessoaFisica = tipoPessoa.value === "fisica";
         const pessoaJuridica = tipoPessoa.value === "juridica";
 
+        botaoBuscarCnpj.hidden = !pessoaJuridica;
+
+        if (!pessoaJuridica) {
+            atualizarStatusCnpj("");
+        }
+
         if (pessoaFisica) {
             labelNome.innerHTML = 'Nome completo <span>*</span>';
             labelDocumento.innerHTML = 'CPF <span>*</span>';
@@ -184,6 +212,86 @@ if (form) {
         labelNome.innerHTML = 'Nome completo / Razão social <span>*</span>';
         labelDocumento.innerHTML = 'CPF / CNPJ <span>*</span>';
         documentoDevedor.placeholder = "Digite somente números";
+    }
+
+    function atualizarStatusCnpj(mensagem, tipo = "") {
+        statusCnpj.textContent = mensagem;
+        statusCnpj.className = `lookup-status${tipo ? ` is-${tipo}` : ""}`;
+    }
+
+    function preencherCampo(id, valor) {
+        const input = document.getElementById(id);
+
+        if (!input || valor === null || valor === undefined || String(valor).trim() === "") {
+            return;
+        }
+
+        input.value = String(valor).trim();
+        atualizarEstadoDoCampo(input);
+    }
+
+    async function buscarDadosCnpj() {
+        const cnpj = somenteNumeros(documentoDevedor.value);
+
+        if (!cnpjValido(cnpj)) {
+            atualizarStatusCnpj("Digite um CNPJ válido com 14 números.", "error");
+            documentoDevedor.focus();
+            return;
+        }
+
+        botaoBuscarCnpj.disabled = true;
+        botaoBuscarCnpj.textContent = "Consultando...";
+        atualizarStatusCnpj("Consultando os dados públicos do CNPJ...");
+
+        try {
+            const resposta = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`, {
+                headers: { Accept: "application/json" }
+            });
+            const dados = await resposta.json().catch(() => ({}));
+
+            if (!resposta.ok) {
+                const mensagem = resposta.status === 404
+                    ? "CNPJ não encontrado na base consultada."
+                    : dados.message || "Não foi possível consultar o CNPJ agora.";
+                throw new Error(mensagem);
+            }
+
+            const tipoLogradouro = String(dados.descricao_tipo_de_logradouro || "").trim();
+            const logradouro = String(dados.logradouro || "").trim();
+            const rua = tipoLogradouro && !logradouro.toUpperCase().startsWith(tipoLogradouro.toUpperCase())
+                ? `${tipoLogradouro} ${logradouro}`
+                : logradouro;
+            const endereco = [
+                rua,
+                dados.numero || "S/N",
+                dados.complemento,
+                dados.bairro,
+                dados.municipio && dados.uf ? `${dados.municipio}-${dados.uf}` : dados.municipio,
+                dados.cep ? `CEP ${String(dados.cep).padStart(8, "0").replace(/^(\d{5})(\d)/, "$1-$2")}` : ""
+            ].filter((parte) => String(parte || "").trim()).join(", ");
+            const telefone = [dados.ddd_telefone_1, dados.ddd_telefone_2]
+                .map((item) => somenteNumeros(String(item || "")))
+                .find(Boolean);
+
+            preencherCampo("nomeDevedor", dados.razao_social);
+            preencherCampo("enderecoDevedor", endereco);
+            preencherCampo("emailDevedor", dados.correio_eletronico);
+            preencherCampo("telefoneDevedor", telefone ? formatarTelefone(telefone) : "");
+
+            const situacao = String(dados.descricao_situacao_cadastral || "NÃO INFORMADA").toUpperCase();
+            atualizarStatusCnpj(
+                `Dados encontrados. Situação cadastral: ${situacao}. Confira as informações antes de continuar.`,
+                situacao === "ATIVA" ? "success" : "warning"
+            );
+        } catch (erro) {
+            const mensagem = erro instanceof TypeError
+                ? "Não foi possível acessar o serviço de consulta. Verifique a internet e tente novamente."
+                : erro.message;
+            atualizarStatusCnpj(mensagem, "error");
+        } finally {
+            botaoBuscarCnpj.disabled = false;
+            botaoBuscarCnpj.textContent = "Buscar dados";
+        }
     }
 
     function documentoTemTamanhoValido(campo) {
@@ -738,9 +846,14 @@ if (form) {
         campo.addEventListener("input", () => {
             campo.value = formatarCpfCnpj(campo.value);
             atualizarEstadoDoCampo(campo);
+            if (campo === documentoDevedor) {
+                atualizarStatusCnpj("");
+            }
             esconderFeedback();
         });
     });
+
+    botaoBuscarCnpj.addEventListener("click", buscarDadosCnpj);
 
     form.querySelectorAll('[data-js="telefone"]').forEach((campo) => {
         campo.addEventListener("input", () => {
@@ -838,6 +951,7 @@ if (form) {
             contadorOrigem.textContent = "0";
             dataConfissao.value = dataLocalHoje();
             atualizarCamposPorTipo();
+            atualizarStatusCnpj("");
             atualizarCredor();
             atualizarFiador();
             atualizarResumoParcelas();
