@@ -1,3 +1,6 @@
+Exit code: 0
+Wall time: 0.8 seconds
+Output:
 "use strict";
 
 const contratoForm = document.getElementById("contratoForm");
@@ -10,6 +13,7 @@ if (contratoForm) {
     const feedback = document.querySelector('[data-js="feedback"]');
     const dataContrato = document.getElementById("dataContrato");
     const inicioContrato = document.getElementById("inicioContrato");
+    const primeiroVencimento = document.getElementById("primeiroVencimento");
     const menuToggle = document.querySelector('[data-js="menu-toggle"]');
     const sidebarOverlay = document.querySelector('[data-js="sidebar-overlay"]');
     const botaoBuscarCnpj = document.querySelector('[data-js="buscar-cnpj"]');
@@ -256,6 +260,7 @@ if (contratoForm) {
             "{{CPF}}": campo("cpfSocio"),
             "{{Valor}}": campo("valorContrato"),
             "{{VALOR}}": campo("valorContrato"),
+            "{{PRIMEIRO_VENCIMENTO}}": formatarDataCurta(primeiroVencimento.value),
             "{{DATA_VENCIMENTO}}": campo("diaVencimento"),
             "{{DATA}}": campo("diaVencimento"),
             "{{INICIO_CONTRATO}}": formatarDataCurta(inicioContrato.value),
@@ -322,8 +327,26 @@ if (contratoForm) {
         return `<div class="signature-grid">${itens}</div>`;
     }
 
+    function montarCondicoesEspeciais() {
+        const observacoes = campo("observacoesContrato");
+
+        if (!observacoes) {
+            return "";
+        }
+
+        return `
+            <section class="special-conditions">
+                <p class="doc-heading">CONDIÇÕES ESPECIAIS</p>
+                <p class="doc-paragraph">${escaparHtml(observacoes).replace(/\n/g, "<br>")}</p>
+            </section>
+        `;
+    }
+
     function montarBlocos(modelo, valores) {
         let indiceTabela = 0;
+        let condicoesInseridas = false;
+        const condicoesEspeciais = montarCondicoesEspeciais();
+
         return modelo.blocks.map((bloco) => {
             if (bloco.type === "paragraph") {
                 if (bloco.kind === "spacer") {
@@ -334,7 +357,17 @@ if (contratoForm) {
                     return `<p class="doc-witness-title">${preencherTexto(bloco.text, valores)}</p>`;
                 }
 
-                return `<p class="doc-${bloco.kind}">${preencherTexto(bloco.text, valores)}</p>`;
+                const iniciaAssinaturas = bloco.kind === "closing"
+                    || bloco.text.trim().startsWith("Após ler e compreender");
+                const prefixo = !condicoesInseridas && condicoesEspeciais && iniciaAssinaturas
+                    ? condicoesEspeciais
+                    : "";
+
+                if (prefixo) {
+                    condicoesInseridas = true;
+                }
+
+                return `${prefixo}<p class="doc-${bloco.kind}">${preencherTexto(bloco.text, valores)}</p>`;
             }
 
             let rows = bloco.rows;
@@ -390,6 +423,9 @@ if (contratoForm) {
                     .qualification-table td { border: 1px solid #000; }
                     .qualification-table td:first-child { width: 25%; font-weight: 700; }
                     .doc-witness-title { margin: 24pt 0 0; font-weight: 700; text-align: left; }
+                    .special-conditions { margin: 16pt 0; padding: 10pt 12pt; border: 1px solid #000; page-break-inside: avoid; break-inside: avoid; }
+                    .special-conditions .doc-heading { margin-top: 0; }
+                    .special-conditions .doc-paragraph { margin-bottom: 0; }
                     .signature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32pt 42pt; margin: 34pt 0 24pt; page-break-inside: avoid; break-inside: avoid; }
                     .signature-item { min-width: 0; text-align: center; page-break-inside: avoid; break-inside: avoid; }
                     .signature-line { display: block; width: 100%; margin-bottom: 7pt; border-top: 1px solid #000; }
@@ -460,14 +496,15 @@ if (contratoForm) {
         evento.currentTarget.value = formatarMoeda(evento.currentTarget.value);
     });
 
-    contratoForm.querySelectorAll("input").forEach((input) => {
+    contratoForm.querySelectorAll("input, select, textarea").forEach((input) => {
         input.addEventListener("blur", () => atualizarEstadoDoCampo(input));
         input.addEventListener("input", esconderFeedback);
     });
 
     contratoForm.addEventListener("submit", (evento) => {
         evento.preventDefault();
-        const campos = [...contratoForm.querySelectorAll("input")].filter((input) => !input.closest("[hidden]"));
+        const campos = [...contratoForm.querySelectorAll("input, select, textarea")]
+            .filter((input) => !input.closest("[hidden]"));
         const invalidos = campos.filter((input) => !atualizarEstadoDoCampo(input));
 
         if (invalidos.length > 0) {
