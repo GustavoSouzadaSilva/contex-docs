@@ -343,8 +343,24 @@ if (contratoForm) {
         let indiceTabela = 0;
         let condicoesInseridas = false;
         const condicoesEspeciais = montarCondicoesEspeciais();
+        const indiceClausulaSegunda = modelo.blocks.findIndex((bloco) =>
+            bloco.type === "paragraph"
+            && bloco.text.trim().toUpperCase().startsWith("CLÁUSULA SEGUNDA")
+        );
+        let indiceInsercaoCondicoes = indiceClausulaSegunda;
 
-        return modelo.blocks.map((bloco) => {
+        if (indiceClausulaSegunda > 0) {
+            const blocoAnterior = modelo.blocks[indiceClausulaSegunda - 1];
+            const tituloAnteriorPertenceClausulaSegunda = blocoAnterior.type === "paragraph"
+                && blocoAnterior.kind === "heading"
+                && !blocoAnterior.text.trim().toUpperCase().startsWith("CLÁUSULA");
+
+            if (tituloAnteriorPertenceClausulaSegunda) {
+                indiceInsercaoCondicoes -= 1;
+            }
+        }
+
+        return modelo.blocks.map((bloco, indiceBloco) => {
             if (bloco.type === "paragraph") {
                 if (bloco.kind === "spacer") {
                     return '<div class="doc-spacer" aria-hidden="true"></div>';
@@ -356,7 +372,10 @@ if (contratoForm) {
 
                 const iniciaAssinaturas = bloco.kind === "closing"
                     || bloco.text.trim().startsWith("Após ler e compreender");
-                const prefixo = !condicoesInseridas && condicoesEspeciais && iniciaAssinaturas
+                const pontoDefinido = indiceInsercaoCondicoes >= 0
+                    ? indiceBloco === indiceInsercaoCondicoes
+                    : iniciaAssinaturas;
+                const prefixo = !condicoesInseridas && condicoesEspeciais && pontoDefinido
                     ? condicoesEspeciais
                     : "";
 
